@@ -82,6 +82,7 @@ jobs:
         "https://raw.githubusercontent.com/Muyi3571/IP/main/tv.txt"
         https://raw.githubusercontent.com/wldsy/mao/main/cjlive.txt
         "https://raw.githubusercontent.com/jsiptv/jsiptv.github.io/main/TV/v6.txt"
+        "https://gitee.com/jeffyau/live001/raw/master/tv2024IPV4.txt"
         )
         # 央视频道
         rm -f ys.txt && touch ys.txt
