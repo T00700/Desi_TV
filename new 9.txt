@@ -1,4 +1,4 @@
-CCTV-1,mitv://generationnexxxt.com:19806/1a50835e80564ba8ae28fce9bb7f228f#mitv://generationnexxxt.com:19806/f1e3bc8a344e49dab603272c8fd2641e
+CCTV-1,mitv://generationnexxxt.com:19806/1a50835e80564ba8ae28fce9bb7f228f
 CCTV-1,mitv://generationnexxxt.com:19806/f1e3bc8a344e49dab603272c8fd2641e
 CCTV-10,mitv://generationnexxxt.com:19806/65a52e1d000c0c0bdd7f3fad13ad7f10
 CCTV-10,mitv://generationnexxxt.com:19806/db6e0eae415d4d3c80389e51f8aac382
