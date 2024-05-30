@@ -25,13 +25,14 @@ jobs:
       run: |
         # 获取指定txt源
         urls=(
+        "https://bbs.ysctv.cn/tv/live.txt"
+        "https://zzzzz.tv/tv/tv.txt"
+        "https://zzzzz.tv/tv/live.txt"
+        "http://home.jundie.top:81/Cat/tv/live.txt"
         "https://raw.githubusercontent.com/xmbjm/svip/main/lib/live.txt"
         "https://raw.githubusercontent.com/gaotianliuyun/gao/master/list.txt"
         "https://raw.githubusercontent.com/PizazzGY/TVBox_warehouse/main/live.txt"
-        "https://zzzzz.tv/tv/tv.txt"
-        "https://zzzzz.tv/tv/live.txt"
         "https://raw.githubusercontent.com/jinenge/tvbox/main/tvlive/tvlive.txt"
-        "http://home.jundie.top:81/Cat/tv/live.txt"
         "https://raw.githubusercontent.com/vvsolo/miru-extension-MyIPTV-sources/main/ipv4.txt"
         "https://raw.githubusercontent.com/liwei342698/ip/main/ip1"
         "https://raw.githubusercontent.com/liwei342698/ip/main/ip2"
