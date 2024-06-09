@@ -26,8 +26,6 @@ jobs:
         # 获取指定txt源
         urls=(
         "https://bbs.ysctv.cn/tv/live.txt"
-        "https://zzzzz.tv/tv/tv.txt"
-        "https://zzzzz.tv/tv/live.txt"
         "http://home.jundie.top:81/Cat/tv/live.txt"
         "https://raw.githubusercontent.com/xmbjm/svip/main/lib/live.txt"
         "https://raw.githubusercontent.com/gaotianliuyun/gao/master/list.txt"
