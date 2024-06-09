@@ -104,7 +104,7 @@ jobs:
         sed -n '/CCTV1/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS001.txt
-        sed -i 's/^[^,]*,/CCTV-1,/' LS001.txt
+        sed -i 's/^[^,]*,/CCTV-01,/' LS001.txt
         sed -i '/2409:/d' LS001.txt
         
         rm -f test*.txt
@@ -114,7 +114,7 @@ jobs:
         sed -n '/CCTV2/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS002.txt
-        sed -i 's/^[^,]*,/CCTV-2,/' LS002.txt
+        sed -i 's/^[^,]*,/CCTV-02,/' LS002.txt
         sed -i '/2409:/d' LS002.txt
         
         rm -f test*.txt
@@ -124,7 +124,7 @@ jobs:
         sed -n '/CCTV3/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS003.txt
-        sed -i 's/^[^,]*,/CCTV-3,/' LS003.txt
+        sed -i 's/^[^,]*,/CCTV-03,/' LS003.txt
         sed -i '/2409:/d' LS003.txt
         
         rm -f test*.txt
@@ -134,7 +134,7 @@ jobs:
         sed -n '/CCTV4/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS004.txt
-        sed -i 's/^[^,]*,/CCTV-4,/' LS004.txt
+        sed -i 's/^[^,]*,/CCTV-04,/' LS004.txt
         sed -i '/2409:/d' LS004.txt
         
         rm -f test*.txt
@@ -147,7 +147,7 @@ jobs:
         sed -n '/CCTV5/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS005.txt
-        sed -i 's/^[^,]*,/CCTV-5,/' LS005.txt
+        sed -i 's/^[^,]*,/CCTV-05,/' LS005.txt
         sed -i '/2409:/d' LS005.txt
         
         rm -f test*.txt
@@ -157,7 +157,7 @@ jobs:
         sed -n '/CCTV6/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS006.txt
-        sed -i 's/^[^,]*,/CCTV-6,/' LS006.txt
+        sed -i 's/^[^,]*,/CCTV-06,/' LS006.txt
         sed -i '/2409:/d' LS006.txt
         
         rm -f test*.txt
@@ -167,7 +167,7 @@ jobs:
         sed -n '/CCTV7/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS007.txt
-        sed -i 's/^[^,]*,/CCTV-7,/' LS007.txt
+        sed -i 's/^[^,]*,/CCTV-07,/' LS007.txt
         sed -i '/2409:/d' LS007.txt
         
         rm -f test*.txt
@@ -177,7 +177,7 @@ jobs:
         sed -n '/CCTV8/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS008.txt
-        sed -i 's/^[^,]*,/CCTV-8,/' LS008.txt
+        sed -i 's/^[^,]*,/CCTV-08,/' LS008.txt
         sed -i '/2409:/d' LS008.txt
         
         rm -f test*.txt
@@ -187,7 +187,7 @@ jobs:
         sed -n '/CCTV9/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS009.txt
-        sed -i 's/^[^,]*,/CCTV-9,/' LS009.txt
+        sed -i 's/^[^,]*,/CCTV-09,/' LS009.txt
         sed -i '/2409:/d' LS009.txt
         
         rm -f test*.txt
@@ -298,7 +298,7 @@ jobs:
         sed -n '/CCTV-1/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS020.txt
-        sed -i 's/^[^,]*,/CCTV-1,/' LS020.txt
+        sed -i 's/^[^,]*,/CCTV-01,/' LS020.txt
         sed -i '/2409:/d' LS020.txt
         
         rm -f test*.txt
@@ -308,7 +308,7 @@ jobs:
         sed -n '/CCTV-2/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS021.txt
-        sed -i 's/^[^,]*,/CCTV-2,/' LS021.txt
+        sed -i 's/^[^,]*,/CCTV-02,/' LS021.txt
         sed -i '/2409:/d' LS021.txt
         
         rm -f test*.txt
@@ -318,7 +318,7 @@ jobs:
         sed -n '/CCTV-3/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS022.txt
-        sed -i 's/^[^,]*,/CCTV-3,/' LS022.txt
+        sed -i 's/^[^,]*,/CCTV-03,/' LS022.txt
         sed -i '/2409:/d' LS022.txt
         
         rm -f test*.txt
@@ -328,7 +328,7 @@ jobs:
         sed -n '/CCTV-4/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS023.txt
-        sed -i 's/^[^,]*,/CCTV-4,/' LS023.txt
+        sed -i 's/^[^,]*,/CCTV-04,/' LS023.txt
         sed -i '/2409:/d' LS023.txt
         
         rm -f test*.txt
@@ -341,7 +341,7 @@ jobs:
         sed -n '/CCTV-5/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS024.txt
-        sed -i 's/^[^,]*,/CCTV-5,/' LS024.txt
+        sed -i 's/^[^,]*,/CCTV-05,/' LS024.txt
         sed -i '/2409:/d' LS024.txt
         
         rm -f test*.txt
@@ -371,7 +371,7 @@ jobs:
         sed -n '/CCTV-6/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS027.txt
-        sed -i 's/^[^,]*,/CCTV-6,/' LS027.txt
+        sed -i 's/^[^,]*,/CCTV-06,/' LS027.txt
         sed -i '/2409:/d' LS027.txt
         
         rm -f test*.txt
@@ -381,7 +381,7 @@ jobs:
         sed -n '/CCTV-7/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS028.txt
-        sed -i 's/^[^,]*,/CCTV-7,/' LS028.txt
+        sed -i 's/^[^,]*,/CCTV-07,/' LS028.txt
         sed -i '/2409:/d' LS028.txt
         
         rm -f test*.txt
@@ -391,7 +391,7 @@ jobs:
         sed -n '/CCTV-8/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS029.txt
-        sed -i 's/^[^,]*,/CCTV-8,/' LS029.txt
+        sed -i 's/^[^,]*,/CCTV-08,/' LS029.txt
         sed -i '/2409:/d' LS029.txt
         
         rm -f test*.txt
@@ -401,7 +401,7 @@ jobs:
         sed -n '/CCTV-9/Ip' test$i.txt > tmp_test$i.txt
         done
         cat tmp_test*.txt > LS030.txt
-        sed -i 's/^[^,]*,/CCTV-9,/' LS030.txt
+        sed -i 's/^[^,]*,/CCTV-09,/' LS030.txt
         sed -i '/2409:/d' LS030.txt
         
         rm -f test*.txt
