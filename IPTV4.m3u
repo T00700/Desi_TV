@@ -9,7 +9,7 @@ http://10.255.128.136/PLTV/88888888/224/3221225635/10000100000000060000000000000
 http://10.255.128.136/PLTV/88888888/224/3221225636/10000100000000060000000000000173_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV5+.png" tvg-id="CCTV5" tvg-name="CCTV-5+" group-title="央视频道[Wifi]",CCTV-5+
 http://10.255.128.136/PLTV/88888888/224/3221225637/10000100000000060000000000000174_0.smil/index.m3u8?fmt=ts2hls
-#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV6.png" tvg-id="CCTV06" tvg-name="CCTV-06" group-title="央视频道[All]",CCTV-06
+#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV6.png" tvg-id="CCTV06" tvg-name="CCTV-06" group-title="央视频道[Wifi]",CCTV-06
 http://10.255.128.136/PLTV/88888888/224/3221225638/10000100000000060000000000000175_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV8.png" tvg-id="CCTV08" tvg-name="CCTV-08" group-title="央视频道[Wifi]",CCTV-08
 http://10.255.128.136/PLTV/88888888/224/3221225640/10000100000000060000000000000177_0.smil/index.m3u8?fmt=ts2hls
