@@ -9,13 +9,15 @@ http://10.255.128.136/PLTV/88888888/224/3221225635/10000100000000060000000000000
 http://10.255.128.136/PLTV/88888888/224/3221225636/10000100000000060000000000000173_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV5+.png" tvg-id="CCTV5" tvg-name="CCTV-5+" group-title="央视频道[Wifi]",CCTV-5+
 http://10.255.128.136/PLTV/88888888/224/3221225637/10000100000000060000000000000174_0.smil/index.m3u8?fmt=ts2hls
+#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV6.png" tvg-id="CCTV06" tvg-name="CCTV-06" group-title="央视频道[All]",CCTV-06
+http://10.255.128.136/PLTV/88888888/224/3221225638/10000100000000060000000000000175_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV8.png" tvg-id="CCTV08" tvg-name="CCTV-08" group-title="央视频道[Wifi]",CCTV-08
 http://10.255.128.136/PLTV/88888888/224/3221225640/10000100000000060000000000000177_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV10.png" tvg-id="CCTV10" tvg-name="CCTV-10" group-title="央视频道[Wifi]",CCTV-10
 http://10.255.128.136/PLTV/88888888/224/3221225642/10000100000000060000000000000179_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV12.png" tvg-id="CCTV12" tvg-name="CCTV-12" group-title="央视频道[Wifi]",CCTV-12
 http://10.255.128.136/PLTV/88888888/224/3221225643/10000100000000060000000000000180_0.smil/index.m3u8?fmt=ts2hls
-#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV13" tvg-id="CCTV13" tvg-name="CCTV-13" group-title="央视频道[Wifi]",CCTV-13
+#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV13.png" tvg-id="CCTV13" tvg-name="CCTV-13" group-title="央视频道[Wifi]",CCTV-13
 http://10.255.128.136/PLTV/88888888/224/3221225676/10000100000000060000000000000213_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV4K.png" tvg-id="CCTV4k" tvg-name="CCTV-4k" group-title="央视频道[Wifi]",CCTV-4K
 http://10.255.128.136/PLTV/88888888/224/3221226293/10000100000000060000000001081237_0.smil/index.m3u8?fmt=ts2hls
@@ -29,8 +31,6 @@ http://www.zhongyunkj.com:58008/paiptv/cctv3.m3u8
 http://www.zhongyunkj.com:58008/paiptv/cctv5.m3u8
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV5+.png" tvg-id="CCTV5" tvg-name="CCTV-5+" group-title="央视频道[All]",CCTV-5+
 http://www.zhongyunkj.com:58008/paiptv/cctv5+.m3u8
-#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV6.png" tvg-id="CCTV06" tvg-name="CCTV-06" group-title="央视频道[All]",CCTV-06
-http://10.255.128.136/PLTV/88888888/224/3221225638/10000100000000060000000000000175_0.smil/index.m3u8?fmt=ts2hls
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV6.png" tvg-id="CCTV06" tvg-name="CCTV-06" group-title="央视频道[All]",CCTV-06
 http://www.zhongyunkj.com:58008/paiptv/cctv6.m3u8
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/CCTV8.png" tvg-id="CCTV08" tvg-name="CCTV-08" group-title="央视频道[All]",CCTV-08
@@ -71,7 +71,7 @@ http://www.zhongyunkj.com:58008/paiptv/JSWS.m3u8
 http://www.zhongyunkj.com:58008/paiptv/ZJWS.m3u8
 #EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/湖南卫视.png" tvg-id="湖南卫视" tvg-name="湖南卫视" group-title="卫视频道[All]",湖南卫视
 http://www.zhongyunkj.com:58008/paiptv/HNWS.m3u8
-#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/辽宁卫视.png" tvg-id="辽宁卫视[All]" tvg-name="辽宁卫视" group-title="卫视频道",辽宁卫视
+#EXTINF:-1 tvg-logo="https://live.fanmingming.com/tv/辽宁卫视.png" tvg-id="辽宁卫视" tvg-name="辽宁卫视" group-title="卫视频道[All]",辽宁卫视
 http://www.zhongyunkj.com:58008/paiptv/LNWS.m3u8
 #EXTINF:-1 tvg-logo="" tvg-id="央视台球" tvg-name="央视台球" group-title="体育频道[Wifi]",央视台球
 http://10.255.128.136/PLTV/88888888/224/3221225798/10000100000000060000000000000424_0.smil/index.m3u8?fmt=ts2hls
