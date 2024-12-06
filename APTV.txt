@@ -49,18 +49,16 @@ JJ斗地主,,http://dns.yiandrive.com:16813/huya/14079954
 
 网络频道,#genre#
 周星驰,http://dns.yiandrive.com:16813/huya/11342412
-刘德华,http://dns.yiandrive.com:16813/huya/11342424
-铁齿铜牙纪晓岚,http://dns.yiandrive.com:16813/huya/11342396
-犯罪电影,http://159.75.85.63:35455/yy/11352908
+纪晓岚,http://dns.yiandrive.com:16813/huya/11342396
+犯罪电影,http://dns.yiandrive.com:16813/huya/11352908
 国产喜剧,http://dns.yiandrive.com:16813/huya/11602044
-士兵突击,http://dns.yiandrive.com:16813/huya/11342430
 武林外传,http://159.75.85.63:35455/yy/21092633
+家有儿女,http://dns.yiandrive.com:16813/huya/11352872
 郭德纲相声,http://dns.yiandrive.com:16813/huya/10132155
 郭德纲相声,http://dns.yiandrive.com:16813/huya/27534712
-赵本山小品,http://dns.yiandrive.com:16813/huya/30254422
 超级交通站,http://dns.yiandrive.com:16813/huya/11342433
-家有儿女,http://dns.yiandrive.com:16813/huya/11352872
 鹊刀门传奇,http://dns.yiandrive.com:16813/huya/11352963
+历届春晚小品,http://dns.yiandrive.com:16813/huya/30254422
 易中天品三国,http://dns.yiandrive.com:16813/huya/11602032
 灌篮高手,https://live.iill.top/yy/1382735626
 梨园频道,http://10.255.128.136/PLTV/88888888/224/3221226220/10000100000000060000000000799003_0.smil/index.m3u8?fmt=ts2hls
