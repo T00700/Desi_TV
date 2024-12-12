@@ -27,7 +27,7 @@ jobs:
         urls=(
         "https://raw.githubusercontent.com/rootoooo/rootoooo.github.io/refs/heads/main/zeng.txt"
         "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/IPTV.txt"
-        "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/udpxy/全国.txt"
+        https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/udpxy/%E5%85%A8%E5%9B%BD.txt
         "https://raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv4.txt"
         "https://raw.githubusercontent.com/SuperNinjap/tvbox/refs/heads/main/tv.txt"
         "https://raw.githubusercontent.com/lc529180405/caicai/refs/heads/main/18txt/%E8%80%81%E5%A4%B4%E4%B9%90.txt"
