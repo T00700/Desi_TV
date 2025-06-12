@@ -1,0 +1,2038 @@
+name: 更新
+
+on:
+  watch:
+    types: [started]
+  schedule:
+   - cron:  '4 4 * * 4'
+  workflow_dispatch:
+  
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: GetTime
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S CST')"
+
+    - name: 更新
+      run: |
+        # 获取指定txt源
+        urls=(
+        "https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/refs/heads/main/bbxx.txt"
+        "https://raw.githubusercontent.com/80947108/888/refs/heads/main/tv/FGlive.txt"
+        "https://raw.githubusercontent.com/80947108/888/main/tv/FGlive.txt"
+        "https://raw.githubusercontent.com/fleung49/star/refs/heads/main/mit"
+        "https://raw.githubusercontent.com/fleung49/star/refs/heads/main/tiger"
+        "https://raw.githubusercontent.com/fuleishu/ceshi/refs/heads/main/xiyou.txt"
+        "https://raw.githubusercontent.com/fuleishu/ceshi/refs/heads/main/zhibo1.txt"
+        "https://raw.githubusercontent.com/fleung49/star/refs/heads/main/507"
+        "https://raw.githubusercontent.com/alenin-zhang/IPTV/refs/heads/main/dns-itv.txt"
+        "https://raw.githubusercontent.com/chxxyz2004/wdds/refs/heads/main/itvlist.txt"
+        "https://raw.githubusercontent.com/adminouyang/dszby/refs/heads/main/%E7%BD%91%E7%BB%9C%E6%94%B6%E9%9B%86.txt"
+        "https://raw.githubusercontent.com/chendi0207/my-TVBOX/refs/heads/main/tvboxqq/%E5%A4%A9%E5%BE%AE/lives/%E7%BA%BF%E8%B7%AF%E2%91%A0.txt"
+        "https://raw.githubusercontent.com/chendi0207/my-TVBOX/refs/heads/main/tvboxqq/%E5%A4%A9%E5%BE%AE/lives/%E7%BA%BF%E8%B7%AF%E2%91%A9.txt"
+        "https://raw.githubusercontent.com/lzhmh/uniwb/refs/heads/main/uniwb.txt"
+        "https://raw.githubusercontent.com/lzhmh/pd/refs/heads/main/33mob.php"
+        "https://raw.githubusercontent.com/m174460635/ma_price/refs/heads/main/iptv.m3u"
+        "https://raw.githubusercontent.com/Guovin/iptv-api/refs/heads/master/output/ipv6/result.txt"
+        "https://raw.githubusercontent.com/Guovin/iptv-api/refs/heads/master/output/ipv4/result.txt"
+        "https://raw.githubusercontent.com/fafa002/yf2025/refs/heads/main/yiyifafa.txt"
+        "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/IPTV.txt"
+        "https://raw.githubusercontent.com/lalifeier/IPTV/main/txt/udpxy/%E5%85%A8%E5%9B%BD.txt"
+        "https://raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv4.txt"
+        "https://raw.githubusercontent.com/SuperNinjap/tvbox/refs/heads/main/tv.txt"
+        "https://raw.githubusercontent.com/lc529180405/caicai/refs/heads/main/18txt/%E8%80%81%E5%A4%B4%E4%B9%90.txt"
+        "https://raw.githubusercontent.com/KapFly/TB/refs/heads/main/live/CN2D.txt"
+        "https://raw.githubusercontent.com/liwei342698/ip/refs/heads/main/%E5%B9%BF%E7%94%B5"
+        "https://raw.githubusercontent.com/gaotianliuyun/gao/master/list.txt"
+        "https://raw.githubusercontent.com/govnn/govnn.github.io/refs/heads/main/e/888"
+        "https://raw.githubusercontent.com/govnn/govnn.github.io/refs/heads/main/a/mut"
+        "https://raw.githubusercontent.com/govnn/govnn.github.io/refs/heads/main/a/cts"
+        "https://raw.githubusercontent.com/PizazzGY/TVBox_warehouse/main/live.txt"
+        "https://raw.githubusercontent.com/jinenge/tvbox/main/tvlive/tvlive.txt"
+        "https://raw.githubusercontent.com/vvsolo/miru-extension-MyIPTV-sources/main/ipv4.txt"
+        "https://raw.githubusercontent.com/liwei342698/ip/main/ip1"
+        "https://raw.githubusercontent.com/linfern-mou/linfern/main/iptv/tv.txt"
+        "https://raw.githubusercontent.com/vvsolo/miru-extension-MyIPTV-sources/main/vod.txt"
+        "https://raw.githubusercontent.com/GhTGc/GhTGc.github.io/main/zbdhj.txt"
+        "https://raw.githubusercontent.com/Supprise0901/TVBox_live/main/live.txt"
+        "https://raw.githubusercontent.com/myvmiao/tv/main/ee.txt"
+        "https://raw.githubusercontent.com/helcddd/tvbox/main/tv.txt"
+        "https://raw.githubusercontent.com/2hacc/TVBox/main/live/live.txt"
+        "https://raw.githubusercontent.com/asiaboke/IPTV/main/huichunliao.txt"
+        "https://raw.githubusercontent.com/asiaboke/IPTV/main/ygbhzb.txt"
+        "https://raw.githubusercontent.com/tansuotv/IPTVindex/main/tv/tv.txt"
+        "https://raw.githubusercontent.com/qdpdwjx/ziyuan/master/mao.php"
+        "https://raw.githubusercontent.com/yhwg333/yhwg333/gh-pages/JGZB.txt"
+        "https://raw.githubusercontent.com/asiaboke/asiaboke/main/2024.txt"
+        "https://raw.githubusercontent.com/gohhh1234/iptv/master/IPTV.txt"
+        "https://raw.githubusercontent.com/beidoutianyan/github.io/main/files.txt"
+        "https://raw.githubusercontent.com/myvmiao/tv/main/chaojidianshi.txt"
+        "https://raw.githubusercontent.com/YaoChuCai/YaoChuCai.github.io/main/dsj.txt"
+        "https://raw.githubusercontent.com/younsir/tv/main/2.txt"
+        "https://raw.githubusercontent.com/bravenavigator/link/main/live.txt"
+        "https://raw.githubusercontent.com/beidoutianyan/github.io/main/files.txt"
+        "https://raw.githubusercontent.com/250992941/iptv/main/st1.txt"
+        "https://raw.githubusercontent.com/woniuxs/TVBOX/main/lib/live.txt"
+        "https://raw.githubusercontent.com/Muyi3571/IP/main/tv.txt"
+        "https://raw.githubusercontent.com/jsiptv/jsiptv.github.io/main/TV/v6.txt"
+        "https://raw.githubusercontent.com/wldsy/mao/main/cjlive.txt"
+        "https://raw.githubusercontent.com/lisa3456/lisa3456.github.io/master/zb.txt"
+        "https://raw.githubusercontent.com/lisa3456/lisa3456.github.io/master/zbzb.txt"
+        "https://raw.githubusercontent.com/hanhan8127/TVBox/main/live.txt"
+        "https://raw.githubusercontent.com/sjyes168/tv/main/itv.txt"
+        "https://raw.githubusercontent.com/sjyes168/tv/main/itvlist.txt"
+        "https://raw.githubusercontent.com/hanhan8127/TVBox/main/live.txt"
+        "https://raw.githubusercontent.com/iepwq/cs/main/cs.txt"
+        "https://raw.githubusercontent.com/kensorl/tv/main/tv5.txt"
+        "https://raw.githubusercontent.com/kensorl/tv/main/lib/tw.txt"
+        "https://raw.githubusercontent.com/kensorl/tv/main/lib/twzb.txt"
+        "https://raw.githubusercontent.com/snowxuxf/mabi/master/ALL.txt"
+        "https://raw.githubusercontent.com/adminouyang/231006/refs/heads/main/py/TvSources/iptv.txt"
+        "https://raw.githubusercontent.com/mlzlzj/iptv/refs/heads/main/iptv_list.txt"
+        "https://raw.githubusercontent.com/peterHchina/iptv/refs/heads/main/CNTV-V4.m3u"
+        "https://raw.githubusercontent.com/fanmingming/live/refs/heads/main/tv/m3u/ipv6.m3u"
+        "https://raw.githubusercontent.com/Desmond-Dong/IPTV/refs/heads/main/iptv_sources.m3u8"
+        "https://raw.githubusercontent.com/ZEROXIE01/IPTV/refs/heads/main/mytv1.m3u"
+        "https://raw.githubusercontent.com/TianmuTNT/iptv/refs/heads/main/iptv.txt"
+        "https://raw.githubusercontent.com/linhua8/IPTV/refs/heads/main/ipv6.m3u"
+        "https://raw.githubusercontent.com/junge3333/yrys2026/refs/heads/main/2026yrys.txt"
+        "https://raw.githubusercontent.com/zhuxinfu88/tvlist/refs/heads/main/iptv.txt"
+        "https://raw.githubusercontent.com/zhi35/iptv/refs/heads/master/iptv.m3u"
+        )
+        # 央视频道
+        rm -f ys.txt && touch ys.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -i '/CCTV1[0-7]/Id' test$i.txt
+        sed -n '/CCTV1/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/CCTV-01,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV2/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/CCTV-02,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV3/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/CCTV-03,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV4/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/CCTV-04,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -i '/CCTV5+/Id' test$i.txt
+        sed -i '/CCTV5p/Id' test$i.txt
+        sed -i '/CCTV5plus/Id' test$i.txt
+        sed -n '/CCTV5/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/CCTV-05,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV6/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/CCTV-06,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV7/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/CCTV-07,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV8/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/CCTV-08,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV9/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/CCTV-09,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV10/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/CCTV-10,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV11/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/CCTV-11,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV12/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/CCTV-12,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV13/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/CCTV-13,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV14/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/CCTV-14,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV15/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS015.txt
+        sed -i 's/^[^,]*,/CCTV-15,/' LS015.txt
+        sed -i '/2409:/d' LS015.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV16/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS016.txt
+        sed -i 's/^[^,]*,/CCTV-16,/' LS016.txt
+        sed -i '/2409:/d' LS016.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV17/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS017.txt
+        sed -i 's/^[^,]*,/CCTV-17,/' LS017.txt
+        sed -i '/2409:/d' LS017.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV4K/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS018.txt
+        sed -i 's/^[^,]*,/CCTV-4K,/' LS018.txt
+        sed -i '/2409:/d' LS018.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV8K/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS019.txt
+        sed -i 's/^[^,]*,/CCTV-8K,/' LS019.txt
+        sed -i '/2409:/d' LS019.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -i '/CCTV-1[0-7]/Id' test$i.txt
+        sed -n '/CCTV-1/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS020.txt
+        sed -i 's/^[^,]*,/CCTV-01,/' LS020.txt
+        sed -i '/2409:/d' LS020.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-2/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS021.txt
+        sed -i 's/^[^,]*,/CCTV-02,/' LS021.txt
+        sed -i '/2409:/d' LS021.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-3/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS022.txt
+        sed -i 's/^[^,]*,/CCTV-03,/' LS022.txt
+        sed -i '/2409:/d' LS022.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-4/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS023.txt
+        sed -i 's/^[^,]*,/CCTV-04,/' LS023.txt
+        sed -i '/2409:/d' LS023.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -i '/CCTV-5+/Id' test$i.txt
+        sed -i '/CCTV-5p/Id' test$i.txt
+        sed -i '/CCTV-5plus/Id' test$i.txt
+        sed -n '/CCTV-5/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS024.txt
+        sed -i 's/^[^,]*,/CCTV-05,/' LS024.txt
+        sed -i '/2409:/d' LS024.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV5+/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS025.txt
+        sed -i 's/^[^,]*,/CCTV-5+,/' LS025.txt
+        sed -i '/2409:/d' LS025.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-5+/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS026.txt
+        sed -i 's/^[^,]*,/CCTV-5+,/' LS026.txt
+        sed -i '/2409:/d' LS026.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-6/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS027.txt
+        sed -i 's/^[^,]*,/CCTV-06,/' LS027.txt
+        sed -i '/2409:/d' LS027.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-7/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS028.txt
+        sed -i 's/^[^,]*,/CCTV-07,/' LS028.txt
+        sed -i '/2409:/d' LS028.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-8/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS029.txt
+        sed -i 's/^[^,]*,/CCTV-08,/' LS029.txt
+        sed -i '/2409:/d' LS029.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-9/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS030.txt
+        sed -i 's/^[^,]*,/CCTV-09,/' LS030.txt
+        sed -i '/2409:/d' LS030.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-10/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS031.txt
+        sed -i 's/^[^,]*,/CCTV-10,/' LS031.txt
+        sed -i '/2409:/d' LS031.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-11/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS032.txt
+        sed -i 's/^[^,]*,/CCTV-11,/' LS032.txt
+        sed -i '/2409:/d' LS032.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-12/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS033.txt
+        sed -i 's/^[^,]*,/CCTV-12,/' LS033.txt
+        sed -i '/2409:/d' LS033.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-13/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS034.txt
+        sed -i 's/^[^,]*,/CCTV-13,/' LS034.txt
+        sed -i '/2409:/d' LS034.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-14/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS035.txt
+        sed -i 's/^[^,]*,/CCTV-14,/' LS035.txt
+        sed -i '/2409:/d' LS035.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-15/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS036.txt
+        sed -i 's/^[^,]*,/CCTV-15,/' LS036.txt
+        sed -i '/2409:/d' LS036.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-16/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS037.txt
+        sed -i 's/^[^,]*,/CCTV-16,/' LS037.txt
+        sed -i '/2409:/d' LS037.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-17/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS038.txt
+        sed -i 's/^[^,]*,/CCTV-17,/' LS038.txt
+        sed -i '/2409:/d' LS038.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-4K/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS039.txt
+        sed -i 's/^[^,]*,/CCTV-4K,/' LS039.txt
+        sed -i '/2409:/d' LS039.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/CCTV-8K/Ip' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS040.txt
+        sed -i 's/^[^,]*,/CCTV-8K,/' LS040.txt
+        sed -i '/2409:/d' LS040.txt
+        
+        cat LS001.txt >> ys.txt
+        cat LS002.txt >> ys.txt
+        cat LS003.txt >> ys.txt
+        cat LS004.txt >> ys.txt
+        cat LS005.txt >> ys.txt
+        cat LS006.txt >> ys.txt
+        cat LS007.txt >> ys.txt
+        cat LS008.txt >> ys.txt
+        cat LS009.txt >> ys.txt
+        cat LS010.txt >> ys.txt
+        cat LS011.txt >> ys.txt
+        cat LS012.txt >> ys.txt
+        cat LS013.txt >> ys.txt
+        cat LS014.txt >> ys.txt
+        cat LS015.txt >> ys.txt
+        cat LS016.txt >> ys.txt
+        cat LS017.txt >> ys.txt
+        cat LS018.txt >> ys.txt
+        cat LS019.txt >> ys.txt
+        cat LS020.txt >> ys.txt
+        cat LS021.txt >> ys.txt
+        cat LS022.txt >> ys.txt
+        cat LS023.txt >> ys.txt
+        cat LS024.txt >> ys.txt
+        cat LS025.txt >> ys.txt
+        cat LS026.txt >> ys.txt
+        cat LS027.txt >> ys.txt
+        cat LS028.txt >> ys.txt
+        cat LS029.txt >> ys.txt
+        cat LS030.txt >> ys.txt
+        cat LS031.txt >> ys.txt
+        cat LS032.txt >> ys.txt
+        cat LS033.txt >> ys.txt
+        cat LS034.txt >> ys.txt
+        cat LS035.txt >> ys.txt
+        cat LS036.txt >> ys.txt
+        cat LS037.txt >> ys.txt
+        cat LS038.txt >> ys.txt
+        cat LS039.txt >> ys.txt
+        cat LS040.txt >> ys.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' ys.txt
+        sort -o ys.txt ys.txt
+        sed -i '1i 央视频道,#genre#' ys.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' ys.txt
+        sed -i '/, *$/d' ys.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' ys.txt
+        awk '!seen[$0]++' ys.txt > tmp.txt && mv tmp.txt ys.txt
+        sed -i '/^\s*$/d' ys.txt
+        
+        # 卫视频道
+        rm -f ws.txt && touch ws.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/北京卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/北京卫视,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/东方卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/东方卫视,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/广东卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/广东卫视,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/深圳卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/深圳卫视,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/天津卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/天津卫视,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/黑龙江卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/黑龙江卫视,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/吉林卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/吉林卫视,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/河北卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/河北卫视,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/河南卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/河南卫视,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/湖北卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/湖北卫视,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/湖南卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/湖南卫视,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/山东卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/山东卫视,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/山西卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/山西卫视,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/陕西卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/陕西卫视,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/江苏卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS015.txt
+        sed -i 's/^[^,]*,/江苏卫视,/' LS015.txt
+        sed -i '/2409:/d' LS015.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/浙江卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS016.txt
+        sed -i 's/^[^,]*,/浙江卫视,/' LS016.txt
+        sed -i '/2409:/d' LS016.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/江西卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS017.txt
+        sed -i 's/^[^,]*,/江西卫视,/' LS017.txt
+        sed -i '/2409:/d' LS017.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/安徽卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS018.txt
+        sed -i 's/^[^,]*,/安徽卫视,/' LS018.txt
+        sed -i '/2409:/d' LS018.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/东南卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS019.txt
+        sed -i 's/^[^,]*,/东南卫视,/' LS019.txt
+        sed -i '/2409:/d' LS019.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/厦门卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS020.txt
+        sed -i 's/^[^,]*,/厦门卫视,/' LS020.txt
+        sed -i '/2409:/d' LS020.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/四川卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS021.txt
+        sed -i 's/^[^,]*,/四川卫视,/' LS021.txt
+        sed -i '/2409:/d' LS021.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/重庆卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS022.txt
+        sed -i 's/^[^,]*,/重庆卫视,/' LS022.txt
+        sed -i '/2409:/d' LS022.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/贵州卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS023.txt
+        sed -i 's/^[^,]*,/贵州卫视,/' LS023.txt
+        sed -i '/2409:/d' LS023.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/广西卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS024.txt
+        sed -i 's/^[^,]*,/广西卫视,/' LS024.txt
+        sed -i '/2409:/d' LS024.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/云南卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS025.txt
+        sed -i 's/^[^,]*,/云南卫视,/' LS025.txt
+        sed -i '/2409:/d' LS025.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/辽宁卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS026.txt
+        sed -i 's/^[^,]*,/辽宁卫视,/' LS026.txt
+        sed -i '/2409:/d' LS026.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/西藏卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS027.txt
+        sed -i 's/^[^,]*,/西藏卫视,/' LS027.txt
+        sed -i '/2409:/d' LS027.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/新疆卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS028.txt
+        sed -i 's/^[^,]*,/新疆卫视,/' LS028.txt
+        sed -i '/2409:/d' LS028.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/甘肃卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS029.txt
+        sed -i 's/^[^,]*,/甘肃卫视,/' LS029.txt
+        sed -i '/2409:/d' LS029.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/宁夏卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS030.txt
+        sed -i 's/^[^,]*,/宁夏卫视,/' LS030.txt
+        sed -i '/2409:/d' LS030.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/内蒙古卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS031.txt
+        sed -i 's/^[^,]*,/内蒙古卫视,/' LS031.txt
+        sed -i '/2409:/d' LS031.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/海南卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS032.txt
+        sed -i 's/^[^,]*,/海南卫视,/' LS032.txt
+        sed -i '/2409:/d' LS032.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/延边卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS033.txt
+        sed -i 's/^[^,]*,/延边卫视,/' LS033.txt
+        sed -i '/2409:/d' LS033.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/湾区卫视/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS034.txt
+        sed -i 's/^[^,]*,/湾区卫视,/' LS034.txt
+        sed -i '/2409:/d' LS034.txt
+        
+        cat LS001.txt >> ws.txt
+        cat LS002.txt >> ws.txt
+        cat LS003.txt >> ws.txt
+        cat LS004.txt >> ws.txt
+        cat LS005.txt >> ws.txt
+        cat LS006.txt >> ws.txt
+        cat LS007.txt >> ws.txt
+        cat LS008.txt >> ws.txt
+        cat LS009.txt >> ws.txt
+        cat LS010.txt >> ws.txt
+        cat LS011.txt >> ws.txt
+        cat LS012.txt >> ws.txt
+        cat LS013.txt >> ws.txt
+        cat LS014.txt >> ws.txt
+        cat LS015.txt >> ws.txt
+        cat LS016.txt >> ws.txt
+        cat LS017.txt >> ws.txt
+        cat LS018.txt >> ws.txt
+        cat LS019.txt >> ws.txt
+        cat LS020.txt >> ws.txt
+        cat LS021.txt >> ws.txt
+        cat LS022.txt >> ws.txt
+        cat LS023.txt >> ws.txt
+        cat LS024.txt >> ws.txt
+        cat LS025.txt >> ws.txt
+        cat LS026.txt >> ws.txt
+        cat LS027.txt >> ws.txt
+        cat LS028.txt >> ws.txt
+        cat LS029.txt >> ws.txt
+        cat LS030.txt >> ws.txt
+        cat LS031.txt >> ws.txt
+        cat LS032.txt >> ws.txt
+        cat LS033.txt >> ws.txt
+        cat LS034.txt >> ws.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' ws.txt
+        sort -o ws.txt ws.txt
+        sed -i '1i 卫视频道,#genre#' ws.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' ws.txt
+        sed -i '/, *$/d' ws.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' ws.txt
+        awk '!seen[$0]++' ws.txt > tmp.txt && mv tmp.txt ws.txt
+        sed -i '/^\s*$/d' ws.txt
+        
+        # 港台频道
+        rm -f gt.txt && touch gt.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/鳳凰中文/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/凤凰中文,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰中文/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/凤凰中文,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/鳳凰資訊/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/凤凰资讯,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰资讯/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/凤凰资讯,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/鳳凰香港/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/凤凰香港,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰香港/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/凤凰香港,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/TVBS,/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/TVBS HD,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/TVBS台/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/TVBS HD,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/TVBS HD/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/TVBS HD,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/TVBS新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/TVBS新闻,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/TVBS新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/TVBS新闻,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/東森新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/东森新闻,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/东森新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/东森新闻,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/中天新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/中天新闻,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/中天新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS015.txt
+        sed -i 's/^[^,]*,/中天新闻,/' LS015.txt
+        sed -i '/2409:/d' LS015.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/三立新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS016.txt
+        sed -i 's/^[^,]*,/三立新闻,/' LS016.txt
+        sed -i '/2409:/d' LS016.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/三立新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS017.txt
+        sed -i 's/^[^,]*,/三立新闻,/' LS017.txt
+        sed -i '/2409:/d' LS017.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/年代新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS018.txt
+        sed -i 's/^[^,]*,/年代新闻,/' LS018.txt
+        sed -i '/2409:/d' LS018.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/年代新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS019.txt
+        sed -i 's/^[^,]*,/年代新闻,/' LS019.txt
+        sed -i '/2409:/d' LS019.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/非凡新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS020.txt
+        sed -i 's/^[^,]*,/非凡新闻,/' LS020.txt
+        sed -i '/2409:/d' LS020.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/非凡新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS021.txt
+        sed -i 's/^[^,]*,/非凡新闻,/' LS021.txt
+        sed -i '/2409:/d' LS021.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/鏡新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS022.txt
+        sed -i 's/^[^,]*,/镜新闻台,/' LS022.txt
+        sed -i '/2409:/d' LS022.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/镜新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS023.txt
+        sed -i 's/^[^,]*,/镜新闻台,/' LS023.txt
+        sed -i '/2409:/d' LS023.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/民視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS024.txt
+        sed -i 's/^[^,]*,/民视新闻,/' LS024.txt
+        sed -i '/2409:/d' LS024.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/民视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS025.txt
+        sed -i 's/^[^,]*,/民视新闻,/' LS025.txt
+        sed -i '/2409:/d' LS025.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/中視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS026.txt
+        sed -i 's/^[^,]*,/中视新闻,/' LS026.txt
+        sed -i '/2409:/d' LS026.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/中视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS027.txt
+        sed -i 's/^[^,]*,/中视新闻,/' LS027.txt
+        sed -i '/2409:/d' LS027.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/台視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS028.txt
+        sed -i 's/^[^,]*,/台视新闻,/' LS028.txt
+        sed -i '/2409:/d' LS028.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/台视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS029.txt
+        sed -i 's/^[^,]*,/台视新闻,/' LS029.txt
+        sed -i '/2409:/d' LS029.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/華視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS030.txt
+        sed -i 's/^[^,]*,/华视新闻,/' LS030.txt
+        sed -i '/2409:/d' LS030.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/华视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS031.txt
+        sed -i 's/^[^,]*,/华视新闻,/' LS031.txt
+        sed -i '/2409:/d' LS031.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/民視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS032.txt
+        sed -i 's/^[^,]*,/民视新闻,/' LS032.txt
+        sed -i '/2409:/d' LS032.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/民视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS033.txt
+        sed -i 's/^[^,]*,/民视新闻,/' LS033.txt
+        sed -i '/2409:/d' LS033.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/公視新聞/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS034.txt
+        sed -i 's/^[^,]*,/公视新闻,/' LS034.txt
+        sed -i '/2409:/d' LS034.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/公视新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS035.txt
+        sed -i 's/^[^,]*,/公视新闻,/' LS035.txt
+        sed -i '/2409:/d' LS035.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/澳门莲花/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS036.txt
+        sed -i 's/^[^,]*,/澳门莲花,/' LS036.txt
+        sed -i '/2409:/d' LS036.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/澳門蓮花/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS037.txt
+        sed -i 's/^[^,]*,/澳门莲花,/' LS037.txt
+        sed -i '/2409:/d' LS037.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/寰宇新闻/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS038.txt
+        sed -i 's/^[^,]*,/寰宇新闻,/' LS038.txt
+        sed -i '/2409:/d' LS038.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/環宇新聞,/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS039.txt
+        sed -i 's/^[^,]*,/寰宇新闻,/' LS039.txt
+        sed -i '/2409:/d' LS039.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/寰宇新闻,/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS040.txt
+        sed -i 's/^[^,]*,/寰宇新闻,/' LS040.txt
+        sed -i '/2409:/d' LS040.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰香港台/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS041.txt
+        sed -i 's/^[^,]*,/凤凰香港,/' LS041.txt
+        sed -i '/2409:/d' LS041.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰资讯台/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS042.txt
+        sed -i 's/^[^,]*,/凤凰资讯,/' LS042.txt
+        sed -i '/2409:/d' LS042.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/凤凰中文台/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS043.txt
+        sed -i 's/^[^,]*,/凤凰中文,/' LS043.txt
+        sed -i '/2409:/d' LS043.txt
+        
+        cat LS001.txt >> gt.txt
+        cat LS002.txt >> gt.txt
+        cat LS003.txt >> gt.txt
+        cat LS004.txt >> gt.txt
+        cat LS005.txt >> gt.txt
+        cat LS006.txt >> gt.txt
+        cat LS007.txt >> gt.txt
+        cat LS008.txt >> gt.txt
+        cat LS009.txt >> gt.txt
+        cat LS010.txt >> gt.txt
+        cat LS011.txt >> gt.txt
+        cat LS012.txt >> gt.txt
+        cat LS013.txt >> gt.txt
+        cat LS014.txt >> gt.txt
+        cat LS015.txt >> gt.txt
+        cat LS016.txt >> gt.txt
+        cat LS017.txt >> gt.txt
+        cat LS018.txt >> gt.txt
+        cat LS019.txt >> gt.txt
+        cat LS020.txt >> gt.txt
+        cat LS021.txt >> gt.txt
+        cat LS022.txt >> gt.txt
+        cat LS023.txt >> gt.txt
+        cat LS024.txt >> gt.txt
+        cat LS025.txt >> gt.txt
+        cat LS026.txt >> gt.txt
+        cat LS027.txt >> gt.txt
+        cat LS028.txt >> gt.txt
+        cat LS029.txt >> gt.txt
+        cat LS030.txt >> gt.txt
+        cat LS031.txt >> gt.txt
+        cat LS032.txt >> gt.txt
+        cat LS033.txt >> gt.txt
+        cat LS034.txt >> gt.txt
+        cat LS035.txt >> gt.txt
+        cat LS036.txt >> gt.txt
+        cat LS037.txt >> gt.txt
+        cat LS038.txt >> gt.txt
+        cat LS039.txt >> gt.txt
+        cat LS040.txt >> gt.txt
+        cat LS041.txt >> gt.txt
+        cat LS042.txt >> gt.txt
+        cat LS043.txt >> gt.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' gt.txt
+        sort -o gt.txt gt.txt
+        sed -i '1i 港台频道,#genre#' gt.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' gt.txt
+        sed -i '/, *$/d' gt.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' gt.txt
+        awk '!seen[$0]++' gt.txt > tmp.txt && mv tmp.txt gt.txt
+        sed -i '/^\s*$/d' gt.txt
+        
+        # 科教频道
+        rm -f kj.txt && touch kj.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/探索频道/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/探索频道,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/Discovery/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/Discovery,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/动物星球/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/动物星球,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/科学频道/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/科学频道,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/历史频道/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/历史频道,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/美食星球/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/美食星球,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/国家地理/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/国家地理,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/世界地理/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/世界地理,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/求索动物/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/求索动物,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/求索记录/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/求索记录,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/求索科学/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/求索科学,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/求索生活/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/求索生活,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/兵器科技/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/兵器科技,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/NASA/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/NASA TV,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        cat LS001.txt >> kj.txt
+        cat LS002.txt >> kj.txt
+        cat LS003.txt >> kj.txt
+        cat LS004.txt >> kj.txt
+        cat LS005.txt >> kj.txt
+        cat LS006.txt >> kj.txt
+        cat LS007.txt >> kj.txt
+        cat LS008.txt >> kj.txt
+        cat LS009.txt >> kj.txt
+        cat LS010.txt >> kj.txt
+        cat LS011.txt >> kj.txt
+        cat LS012.txt >> kj.txt
+        cat LS013.txt >> kj.txt
+        cat LS014.txt >> kj.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' kj.txt
+        sort -o kj.txt kj.txt
+        sed -i '1i 科教频道,#genre#' kj.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' kj.txt
+        sed -i '/, *$/d' kj.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' kj.txt
+        awk '!seen[$0]++' kj.txt > tmp.txt && mv tmp.txt kj.txt
+        sed -i '/^\s*$/d' kj.txt
+        
+        # 体育频道
+        rm -f ty.txt && touch ty.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/五星体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/五星体育,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/劲爆体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/劲爆体育,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/广东体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/广东体育,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/辽宁体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/辽宁体育,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/北京体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/北京体育,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/山东体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/山东体育,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/纬来体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/纬来体育,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/緯來體育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/纬来体育,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/愛爾達體育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/爱尔达体育,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/爱尔达体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/爱尔达体育,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/JJ斗地主/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/JJ斗地主,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/风云足球/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/风云足球,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/高尔夫网球/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/高尔夫网球,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/央视台球/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/央视台球,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/緯來体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS015.txt
+        sed -i 's/^[^,]*,/纬来体育,/' LS015.txt
+        sed -i '/2409:/d' LS015.txt
+
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/咪咕体育/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS016.txt
+        sed -i 's/^[^,]*,/咪咕体育,/' LS016.txt
+        sed -i '/2409:/d' LS016.txt
+
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/赛事咪咕/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS017.txt
+        sed -i 's/^[^,]*,/咪咕体育,/' LS017.txt
+        sed -i '/2409:/d' LS017.txt
+
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/咪咕赛事/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS018.txt
+        sed -i 's/^[^,]*,/咪咕体育,/' LS018.txt
+        sed -i '/2409:/d' LS018.txt
+        
+        cat LS001.txt >> ty.txt
+        cat LS002.txt >> ty.txt
+        cat LS003.txt >> ty.txt
+        cat LS004.txt >> ty.txt
+        cat LS005.txt >> ty.txt
+        cat LS006.txt >> ty.txt
+        cat LS007.txt >> ty.txt
+        cat LS008.txt >> ty.txt
+        cat LS009.txt >> ty.txt
+        cat LS010.txt >> ty.txt
+        cat LS011.txt >> ty.txt
+        cat LS012.txt >> ty.txt
+        cat LS013.txt >> ty.txt
+        cat LS014.txt >> ty.txt
+        cat LS015.txt >> ty.txt
+        cat LS016.txt >> ty.txt
+        cat LS017.txt >> ty.txt
+        cat LS018.txt >> ty.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' ty.txt
+        sort -o ty.txt ty.txt
+        sed -i '1i 体育频道,#genre#' ty.txt
+        sed -i '/JJ斗地主,#genre#/d' ty.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' ty.txt
+        sed -i '/, *$/d' ty.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' ty.txt
+        awk '!seen[$0]++' ty.txt > tmp.txt && mv tmp.txt ty.txt
+        sed -i '/^\s*$/d' ty.txt
+        
+        # 轮播频道
+        rm -f lb.txt && touch lb.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/纪晓岚/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS001.txt
+        sed -i 's/^[^,]*,/铁齿铜牙纪晓岚,/' LS001.txt
+        sed -i '/2409:/d' LS001.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/极限挑战/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS002.txt
+        sed -i 's/^[^,]*,/极限挑战,/' LS002.txt
+        sed -i '/2409:/d' LS002.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/武林外传/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS003.txt
+        sed -i 's/^[^,]*,/武林外传,/' LS003.txt
+        sed -i '/2409:/d' LS003.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/家有儿女/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS004.txt
+        sed -i 's/^[^,]*,/家有儿女,/' LS004.txt
+        sed -i '/2409:/d' LS004.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/周星驰/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS005.txt
+        sed -i 's/^[^,]*,/周星驰电影,/' LS005.txt
+        sed -i '/2409:/d' LS005.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/HBO/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS006.txt
+        sed -i 's/^[^,]*,/HBO TV,/' LS006.txt
+        sed -i '/2409:/d' LS006.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/Thrill/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS007.txt
+        sed -i 's/^[^,]*,/ThrillTV,/' LS007.txt
+        sed -i '/2409:/d' LS007.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/喜剧电影/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS008.txt
+        sed -i 's/^[^,]*,/喜剧电影,/' LS008.txt
+        sed -i '/2409:/d' LS008.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/赵本山小品/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS009.txt
+        sed -i 's/^[^,]*,/赵本山小品,/' LS009.txt
+        sed -i '/2409:/d' LS009.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/宰相刘罗锅/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS010.txt
+        sed -i 's/^[^,]*,/宰相刘罗锅,/' LS010.txt
+        sed -i '/2409:/d' LS010.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/大染坊/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS011.txt
+        sed -i 's/^[^,]*,/大染坊,/' LS011.txt
+        sed -i '/2409:/d' LS011.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/葛二蛋/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS012.txt
+        sed -i 's/^[^,]*,/民兵葛二蛋,/' LS012.txt
+        sed -i '/2409:/d' LS012.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/猫和老鼠/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS013.txt
+        sed -i 's/^[^,]*,/猫和老鼠,/' LS013.txt
+        sed -i '/2409:/d' LS013.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/电锯惊魂/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS014.txt
+        sed -i 's/^[^,]*,/电锯惊魂,/' LS014.txt
+        sed -i '/2409:/d' LS014.txt
+        
+        rm -f test*.txt
+        for ((i=1; i<=${#urls[@]}; i++))
+        do
+        wget -qO test$i.txt "${urls[i-1]}"
+        sed -n '/欧美电影/p' test$i.txt > tmp_test$i.txt
+        done
+        cat tmp_test*.txt > LS015.txt
+        sed -i 's/^[^,]*,/欧美电影,/' LS015.txt
+        sed -i '/2409:/d' LS015.txt
+        
+        cat LS001.txt >> lb.txt
+        cat LS002.txt >> lb.txt
+        cat LS003.txt >> lb.txt
+        cat LS004.txt >> lb.txt
+        cat LS005.txt >> lb.txt
+        cat LS006.txt >> lb.txt
+        cat LS007.txt >> lb.txt
+        cat LS008.txt >> lb.txt
+        cat LS009.txt >> lb.txt
+        cat LS010.txt >> lb.txt
+        cat LS011.txt >> lb.txt
+        cat LS012.txt >> lb.txt
+        cat LS013.txt >> lb.txt
+        cat LS014.txt >> lb.txt
+        cat LS015.txt >> lb.txt
+        
+        sed -i 's/^\([^,]*\),\(.*\)/\1,\2/' lb.txt
+        sort -o lb.txt lb.txt
+        sed -i '1i 轮播频道,#genre#' lb.txt
+        rm -f tmp_test*.txt test*.txt LS*.txt
+        sed -i '/.*,.*/!d' lb.txt
+        sed -i '/, *$/d' lb.txt
+        sed -i 's/^[[:space:]]*//; s/[[:space:]]*$//; /^\s*$/d; $!N; /^\(.*\)\n\1$/!P; D' lb.txt
+        awk '!seen[$0]++' lb.txt > tmp.txt && mv tmp.txt lb.txt
+        sed -i '/HBO TV,#genre#/d' lb.txt
+        sed -i '/^\s*$/d' lb.txt
+        
+        # 合成IPTV4
+        rm -f IPTV4.txt && touch IPTV4.txt
+        cat ys.txt >> IPTV4.txt
+        cat ws.txt >> IPTV4.txt
+        cat gt.txt >> IPTV4.txt
+        cat kj.txt >> IPTV4.txt
+        cat ty.txt >> IPTV4.txt
+        cat lb.txt >> IPTV4.txt
+        rm -f ys.txt ws.txt gt.txt kj.txt ty.txt lb.txt
+        sed -i '/^\s*$/d' IPTV4.txt
+        
+        # 指定m3u源
+        # rm -f desi.m3u && touch desi.m3u
+        # wget https://raw.githubusercontent.com/hououinkami/AppleTV/main/China_v4.m3u -O desi1.m3u &&  sed -i -n '/cctv/,+1p' desi1.m3u
+        # wget https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn_cctv.m3u -O desi2.m3u &&  sed -i -n '/cctv/,+1p' desi2.m3u
+        # wget https://m3u.vodtv.cn/o_s_cn_cctv.m3u -O desi3.m3u &&  sed -i -n '/cctv/,+1p' desi3.m3u
+        # wget https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u -O desi4.m3u &&  sed -i -n '/cctv/,+1p' desi4.m3u
+        # wget https://raw.githubusercontent.com/LukeGod/autoRes/main/result.m3u -O desi5.m3u &&  sed -i -n '/cctv/,+1p' desi5.m3u
+        # wget https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/v6.m3u -O desi6.m3u &&  sed -i -n '/cctv/,+1p' desi6.m3u
+        # wget https://raw.githubusercontent.com/YanG-1989/m3u/main/Gather.m3u -O desi7.m3u &&  sed -i -n '/cctv/,+1p' desi7.m3u
+        # wget https://raw.githubusercontent.com/boly4189/tv1/master/zb.m3u -O desi8.m3u &&  sed -i -n '/cctv/,+1p' desi8.m3u
+        # cat desi1.m3u >> desi.m3u
+        # cat desi2.m3u >> desi.m3u
+        # cat desi3.m3u >> desi.m3u
+        # cat desi4.m3u >> desi.m3u
+        # cat desi5.m3u >> desi.m3u
+        # cat desi6.m3u >> desi.m3u
+        # cat desi7.m3u >> desi.m3u
+        # cat desi8.m3u >> desi.m3u
+        # rm -f desi1.m3u desi2.m3u desi3.m3u desi4.m3u desi5.m3u desi6.m3u desi7.m3u desi8.m3u
+        # sed -i '1i #EXTM3U' desi.m3u
+        # sed -i '/^\s*$/d' desi.m3u
+    - name: Clean
+      run: |
+        git config --local user.email "00700@tutanota.com"
+        git config --local user.name "T00700"
+        git checkout --orphan latest_branch
+        git add -A
+        git commit -am "${{ steps.date.outputs.date }}"
+        git branch -D main
+        git branch -m main
+    - name: Push
+      run: git push -f origin main
