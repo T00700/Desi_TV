@@ -28,7 +28,7 @@ try {
 }
 
 # 读取网址列表
-$urls = Get-Content .\urls.txt | Where-Object { $_.Trim() -ne '' }
+$urls = Get-Content .\urls.txt | ForEach-Object { $_.Trim() } | Where-Object { $_ -match 'https?://' }
 
 # 设置最大线程数
 $maxThreads = 20
