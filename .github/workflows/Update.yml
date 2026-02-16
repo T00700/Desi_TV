@@ -1,10 +1,8 @@
-name: 更新
-
-于:
+name: 更新于:
   watch:
     types: [started]
   schedule:
-   - cron:  '* * * 12 21'
+   - cron:  '* * * 12 51'
   workflow_dispatch:
   
 env:
