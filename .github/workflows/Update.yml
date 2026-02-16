@@ -1,5 +1,5 @@
-name: 更新于
-on:
+name: update
+于:
   watch:
     types: [started]
   schedule:
