@@ -1,6 +1,8 @@
 name: quark-cookie
 
 on:
+  schedule:
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -8,35 +10,58 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install playwright
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
         run: |
           npm init -y
           npm install playwright
+          npx playwright install chromium
 
-      - name: Get cookie
+      - name: Fetch Cookie
         run: |
-          node <<EOF
-          const { chromium } = require('playwright');
-          const fs = require('fs');
+          node <<'EOF'
+          const { chromium } = require("playwright");
+          const fs = require("fs");
 
           (async () => {
 
-            const browser = await chromium.launch();
+            const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage();
 
-            await page.goto("https://quark.sm.cn/s?q=桃花马上请长缨 libahao.com");
+            await page.goto("https://quark.sm.cn/s?q=桃花马上请长缨 libahao.com", {
+              waitUntil: "networkidle"
+            });
+
+            await page.waitForTimeout(5000);
 
             const cookies = await page.context().cookies();
 
-            let cookieStr = cookies.map(c=>c.name+"="+c.value).join("; ");
+            const cookieStr = cookies
+              .map(c => `${c.name}=${c.value}`)
+              .join("; ");
 
             fs.writeFileSync("cookie.txt", cookieStr);
 
+            console.log("COOKIE:");
             console.log(cookieStr);
 
             await browser.close();
 
           })();
           EOF
+
+      - name: Commit cookie.txt
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add cookie.txt
+          git commit -m "update cookie" || echo "no change"
+          git push
